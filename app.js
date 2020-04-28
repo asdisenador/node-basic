@@ -3,16 +3,15 @@ const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
+const minify = require('express-minify');
+const compression = require('compression');
 
-const mongoose = require('mongoose');
-
-
+/*const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/satelitedb', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 .then(db => console.log('DB está conectado'))
-.catch(err => console.log(err));
+.catch(err => console.log(err));*/
 
 const app = express();
-
 
 
 //Settings
@@ -20,10 +19,12 @@ app.set('port', process.env.PORT || 7000);
 app.set('appName', 'Mi primer servidor');
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
+
+//middleware
 app.use(morgan('dev'));
-app.use(serveStatic(path.join(__dirname, 'public'), { 
-  dotfiles: 'allow'
-}));
+app.use(compression());
+app.use(minify());
+app.use(serveStatic(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

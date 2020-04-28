@@ -4,7 +4,15 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "imagemin": "rm -rf public/images && imagemin src/images/* --out-dir=public/images",
+    "clean": "rm -rf public/fonts && cp -a src/fonts public/fonts",
+    "start": "node app.js",
+    "build-css": "node-sass --output-style  --include-path src src/scss/estilos.scss public/css/estilos.css",
+    "copy-js": "rm -rf public/js && cp -a src/js public/js",
+    "watch-js": "nodemon -w src/js -x \"npm run copy-js\"",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
+    "devNode": "nodemon app.js",
+    "dev": "run-p watch-css devNode watch-js"
   },
   "author": "",
   "license": "ISC",
